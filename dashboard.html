@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TN Transport Optimizer - Dashboard</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--light-color) 0%, #e0e7ff 100%);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--success-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .notification-btn:hover {
+            background: var(--gray-100);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .user-menu:hover {
+            background: var(--gray-100);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 1rem 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .metric-title {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-icon {
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .metric-trend.up {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .metric-trend.down {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Route Cards */
+        .route-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .route-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .route-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray-900);
+        }
+
+        .route-status {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .route-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .route-metric {
+            text-align: center;
+        }
+
+        .route-metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .route-metric-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 1rem;
+        }
+
+        .chart-container canvas {
+            border-radius: 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* News Feed */
+        .news-feed {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .news-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            transition: background 0.2s;
+        }
+
+        .news-item:hover {
+            background: var(--gray-50);
+        }
+
+        .news-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .news-summary {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .news-meta {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Weather Widget */
+        .weather-widget {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-temp {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-condition {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Events Calendar */
+        .events-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--gray-50);
+        }
+
+        .event-date {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 60px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .event-details {
+            flex: 1;
+        }
+
+        .event-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .event-impact {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+                gap: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .metric-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .route-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">🚌 TN Transport Optimizer</div>
+            <div class="system-status">
+                <div class="status-indicator"></div>
+                <span>System Online</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="notification-btn" onclick="showNotifications()">
+                🔔
+                <span class="notification-badge" id="notificationCount">3</span>
+            </button>
+            <div class="user-menu" onclick="showUserMenu()">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div>
+                    <div id="userName" style="font-weight: 600; font-size: 0.875rem;">Admin</div>
+                    <div id="userRole" style="font-size: 0.75rem; color: var(--gray-600);">Administrator</div>
+                </div>
+                <span style="margin-left: 0.5rem;">▼</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <button class="nav-btn active" data-section="dashboard">🏠 Dashboard</button>
+            <button class="nav-btn" data-section="analytics">📊 Analytics</button>
+            <button class="nav-btn" data-section="scheduler">⏰ Scheduler</button>
+            <button class="nav-btn" data-section="events">🎉 Events</button>
+            <button class="nav-btn" data-section="news">📰 News</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="metric-cards">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Performance Today</div>
+                        <div class="metric-icon">📈</div>
+                    </div>
+                    <div class="metric-value" id="todayPerformance">87.3%</div>
+                    <div class="metric-label">vs Predicted Demand</div>
+                    <div class="metric-trend up" id="performanceTrend">+5.2%</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Active Buses</div>
+                        <div class="metric-icon">🚌</div>
+                    </div>
+                    <div class="metric-value" id="activeBuses">45</div>
+                    <div class="metric-label">Across 3 routes</div>
+                    <div class="system-status">LIVE</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Passengers Served</div>
+                        <div class="metric-icon">👥</div>
+                    </div>
+                    <div class="metric-value" id="passengersServed">8,247</div>
+                    <div class="metric-label">Today so far</div>
+                    <div class="metric-trend up">+12.8%</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Weekly Savings</div>
+                        <div class="metric-icon">💰</div>
+                    </div>
+                    <div class="metric-value">₹52,500</div>
+                    <div class="metric-label">Cost optimization</div>
+                    <div class="metric-trend up">+15.3%</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem; color: var(--gray-900);">🌤️ Weather Impact</h3>
+                    <div class="weather-widget">
+                        <div class="weather-icon" id="weatherIcon">⛅</div>
+                        <div class="weather-temp" id="weatherTemp">29°C</div>
+                        <div class="weather-condition" id="weatherCondition">Partly Cloudy</div>
+                        <div class="weather-details">
+                            <div>
+                                <div>Humidity</div>
+                                <div id="weatherHumidity">68%</div>
+                            </div>
+                            <div>
+                                <div>Impact</div>
+                                <div id="weatherImpact">+5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem; color: var(--gray-900);">🎉 Upcoming Events</h3>
+                    <div class="events-list" id="eventsList">
+                        <!-- Events will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="route-cards" id="routeCards">
+                <!-- Route cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <div class="card">
+                <h2 style="margin-bottom: 2rem;">📊 Predictive Analytics Dashboard</h2>
+                
+                <div style="margin-bottom: 2rem;">
+                    <label for="analytics-route" style="font-weight: 600; margin-right: 1rem;">Select Route:</label>
+                    <select id="analytics-route" style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: 4px;">
+                        <option value="tp_pc">Tiruppur to Pollachi</option>
+                        <option value="tp_cb">Tiruppur to Coimbatore</option>
+                        <option value="tp_sl">Tiruppur to Salem</option>
+                    </select>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="demandChart"></canvas>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <span style="font-weight: 600;">Prediction Confidence: </span>
+                    <span id="predictionAccuracy" style="color: var(--success-color); font-weight: 700;">89.2%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scheduler Section -->
+        <section id="scheduler" class="section">
+            <div class="card">
+                <h2 style="margin-bottom: 2rem;">⏰ Tomorrow's Smart Schedule</h2>
+                
+                <div class="grid-2" style="margin-bottom: 2rem;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Schedule Overview</h4>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="scheduleChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Optimization Summary</h4>
+                        <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 12px;">
+                            <div style="margin-bottom: 1rem;">
+                                <span style="font-weight: 600;">Total Buses Required:</span>
+                                <span style="float: right; color: var(--primary-color); font-weight: 700;" id="totalBusesRequired">52</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <span style="font-weight: 600;">Estimated Daily Cost:</span>
+                                <span style="float: right; color: var(--success-color); font-weight: 700;" id="estimatedCost">₹2,45,000</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <span style="font-weight: 600;">Cost Savings:</span>
+                                <span style="float: right; color: var(--success-color); font-weight: 700;">₹18,500</span>
+                            </div>
+                            <div style="margin-bottom: 2rem;">
+                                <span style="font-weight: 600;">Efficiency Gain:</span>
+                                <span style="float: right; color: var(--success-color); font-weight: 700;">+12.5%</span>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-primary" onclick="approveSchedule()">✓ Approve Schedule</button>
+                                <button class="btn btn-outline" onclick="modifySchedule()">✏️ Modify</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="section">
+            <div class="card">
+                <h2 style="margin-bottom: 2rem;">🎉 Tamil Nadu Events Calendar 2025-2026</h2>
+                <div id="fullEventsList">
+                    <!-- Full events list will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="section">
+            <div class="card">
+                <h2 style="margin-bottom: 2rem;">📰 Transportation News & Updates</h2>
+                <div class="news-feed" id="newsFeed">
+                    <!-- News will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Global variables
+        let authToken = localStorage.getItem('auth_token');
+        let userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+        let updateInterval;
+        let demandChart;
+        let scheduleChart;
+
+        // Check authentication
+        if (!authToken) {
+            window.location.href = 'login.html';
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        async function initializeApp() {
+            console.log('🚀 Initializing TN Transport Optimizer 2025...');
+            
+            // Setup user interface
+            setupUserInterface();
+            
+            // Setup navigation
+            setupNavigation();
+            
+            // Load initial data
+            await loadDashboardData();
+            
+            // Setup real-time updates
+            setupRealTimeUpdates();
+            
+            // Setup charts
+            setupCharts();
+            
+            // Load additional data
+            loadEvents();
+            loadNews();
+            
+            console.log('✅ Dashboard initialized successfully');
+        }
+
+        function setupUserInterface() {
+            // Update user info in header
+            if (userInfo.username) {
+                document.getElementById('userName').textContent = userInfo.username;
+                document.getElementById('userRole').textContent = userInfo.role || 'User';
+                document.getElementById('userAvatar').textContent = userInfo.username.charAt(0).toUpperCase();
+            }
+        }
+
+        function setupNavigation() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.section');
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // Update active nav button
+                    navButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetSection) {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    // Handle section-specific initialization
+                    if (targetSection === 'analytics') {
+                        updateDemandChart();
+                    } else if (targetSection === 'scheduler') {
+                        updateScheduleChart();
+                    }
+                });
+            });
+        }
+
+        async function loadDashboardData() {
+            try {
+                // Load dashboard stats
+                const response = await fetch('http://localhost:5000/api/dashboard-stats', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const stats = await response.json();
+                    updateDashboardMetrics(stats);
+                }
+                
+                // Load route data
+                const routesResponse = await fetch('http://localhost:5000/api/routes', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (routesResponse.ok) {
+                    const routes = await routesResponse.json();
+                    updateRouteCards(routes);
+                }
+                
+                // Load live updates
+                await loadLiveUpdates();
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        function updateDashboardMetrics(stats) {
+            document.getElementById('todayPerformance').textContent = `${stats.prediction_accuracy}%`;
+            document.getElementById('activeBuses').textContent = stats.total_buses;
+            document.getElementById('passengersServed').textContent = stats.passengers_today.toLocaleString();
+        }
+
+        function updateRouteCards(routes) {
+            const container = document.getElementById('routeCards');
+            container.innerHTML = '';
+            
+            routes.forEach(route => {
+                const routeCard = createRouteCard(route);
+                container.appendChild(routeCard);
+            });
+        }
+
+        function createRouteCard(route) {
+            const card = document.createElement('div');
+            card.className = 'route-card';
+            card.innerHTML = `
+                <div class="route-header">
+                    <div class="route-name">${route.name}</div>
+                    <div class="route-status">ACTIVE</div>
+                </div>
+                <div class="route-metrics">
+                    <div class="route-metric">
+                        <div class="route-metric-value">${Math.floor(Math.random() * 30 + 70)}%</div>
+                        <div class="route-metric-label">Current Load</div>
+                    </div>
+                    <div class="route-metric">
+                        <div class="route-metric-value">${Math.floor(Math.random() * 10 + 85)}%</div>
+                        <div class="route-metric-label">Accuracy</div>
+                    </div>
+                    <div class="route-metric">
+                        <div class="route-metric-value">${Math.floor(Math.random() * 15 + 5)} min</div>
+                        <div class="route-metric-label">Next Bus</div>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        async function loadLiveUpdates() {
+            try {
+                const response = await fetch('http://localhost:5000/api/live-updates', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const updates = await response.json();
+                    updateWeatherWidget(updates.weather);
+                    updateLiveMetrics(updates);
+                }
+            } catch (error) {
+                console.error('Error loading live updates:', error);
+            }
+        }
+
+        function updateWeatherWidget(weather) {
+            const iconMap = {
+                'Clear': '☀️',
+                'Partly Cloudy': '⛅',
+                'Cloudy': '☁️',
+                'Rain': '🌧️',
+                'Heavy Rain': '⛈️'
+            };
+            
+            document.getElementById('weatherIcon').textContent = iconMap[weather.condition] || '⛅';
+            document.getElementById('weatherTemp').textContent = `${Math.round(weather.temperature)}°C`;
+            document.getElementById('weatherCondition').textContent = weather.condition;
+            document.getElementById('weatherHumidity').textContent = `${Math.round(weather.humidity)}%`;
+            document.getElementById('weatherImpact').textContent = `+${Math.round((weather.weather_factor - 1) * 100)}%`;
+        }
+
+        function updateLiveMetrics(updates) {
+            document.getElementById('activeBuses').textContent = updates.active_buses;
+            
+            // Update route loads (simulated)
+            const routeCards = document.querySelectorAll('.route-card');
+            routeCards.forEach((card, index) => {
+                const routeIds = ['tp_pc', 'tp_cb', 'tp_sl'];
+                const routeId = routeIds[index];
+                if (updates.current_load[routeId]) {
+                    card.querySelector('.route-metric-value').textContent = `${updates.current_load[routeId]}%`;
+                }
+                if (updates.next_buses[routeId]) {
+                    card.querySelectorAll('.route-metric-value')[2].textContent = `${updates.next_buses[routeId]} min`;
+                }
+            });
+        }
+
+        async function loadEvents() {
+            try {
+                const response = await fetch('http://localhost:5000/api/events/upcoming', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const events = await response.json();
+                    updateEventsDisplay(events);
+                }
+            } catch (error) {
+                console.error('Error loading events:', error);
+            }
+        }
+
+        function updateEventsDisplay(events) {
+            const eventsList = document.getElementById('eventsList');
+            const fullEventsList = document.getElementById('fullEventsList');
+            
+            eventsList.innerHTML = '';
+            fullEventsList.innerHTML = '';
+            
+            // Show first 4 events in dashboard
+            events.slice(0, 4).forEach(event => {
+                const eventItem = createEventItem(event);
+                eventsList.appendChild(eventItem);
+            });
+            
+            // Show all events in events section
+            events.forEach(event => {
+                const eventItem = createEventItem(event);
+                fullEventsList.appendChild(eventItem.cloneNode(true));
+            });
+        }
+
+        function createEventItem(event) {
+            const item = document.createElement('div');
+            item.className = 'event-item';
+            item.innerHTML = `
+                <div class="event-date">
+                    <div>${event.date.split('-')[2]}</div>
+                    <div style="font-size: 0.6rem;">${new Date(event.date).toLocaleDateString('en', {month: 'short'})}</div>
+                </div>
+                <div class="event-details">
+                    <div class="event-name">${event.name}</div>
+                    <div class="event-impact">Expected impact: +${Math.round((event.impact - 1) * 100)}% demand</div>
+                </div>
+                <div style="color: var(--gray-500); font-size: 0.75rem;">
+                    ${event.days_away === 0 ? 'Today' : event.days_away === 1 ? 'Tomorrow' : `${event.days_away} days`}
+                </div>
+            `;
+            return item;
+        }
+
+        async function loadNews() {
+            try {
+                const response = await fetch('http://localhost:5000/api/news/transport', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const news = await response.json();
+                    updateNewsDisplay(news);
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                // Show demo news if API fails
+                updateNewsDisplay([
+                    {
+                        title: 'Tamil Nadu announces new electric bus fleet for 2025',
+                        summary: 'State government plans to add 500 electric buses to improve sustainable transport...',
+                        published: new Date().toISOString(),
+                        category: 'infrastructure'
+                    },
+                    {
+                        title: 'AI-powered traffic management system launched in Chennai',
+                        summary: 'New intelligent system reduces traffic congestion by 25% in pilot areas...',
+                        published: new Date().toISOString(),
+                        category: 'technology'
+                    },
+                    {
+                        title: 'Rural connectivity improved with new bus routes',
+                        summary: 'Transport department adds 15 new routes connecting remote villages...',
+                        published: new Date().toISOString(),
+                        category: 'expansion'
+                    }
+                ]);
+            }
+        }
+
+        function updateNewsDisplay(news) {
+            const newsFeed = document.getElementById('newsFeed');
+            newsFeed.innerHTML = '';
+            
+            news.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                newsItem.innerHTML = `
+                    <div class="news-title">${item.title}</div>
+                    <div class="news-summary">${item.summary}</div>
+                    <div class="news-meta">
+                        <span style="background: var(--primary-color); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.6rem; text-transform: uppercase;">
+                            ${item.category || 'News'}
+                        </span>
+                        <span style="margin-left: 1rem;">
+                            ${new Date(item.published).toLocaleDateString()}
+                        </span>
+                    </div>
+                `;
+                newsFeed.appendChild(newsItem);
+            });
+        }
+
+        function setupCharts() {
+            // Demand Chart
+            const demandCtx = document.getElementById('demandChart');
+            if (demandCtx) {
+                demandChart = new Chart(demandCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: 24}, (_, i) => `${i.toString().padStart(2, '0')}:00`),
+                        datasets: [
+                            {
+                                label: 'Today (Actual)',
+                                data: generateSampleData(24, 50, 500),
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Today (Predicted)',
+                                data: generateSampleData(24, 45, 480),
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                fill: false,
+                                borderDash: [5, 5],
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Tomorrow (Forecast)',
+                                data: generateSampleData(24, 55, 520),
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Passengers per Hour'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time (24-hour format)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Schedule Chart
+            const scheduleCtx = document.getElementById('scheduleChart');
+            if (scheduleCtx) {
+                scheduleChart = new Chart(scheduleCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Array.from({length: 24}, (_, i) => `${i.toString().padStart(2, '0')}:00`),
+                        datasets: [{
+                            label: 'Buses Required',
+                            data: generateScheduleData(24),
+                            backgroundColor: '#667eea',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Buses'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time (24-hour format)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function generateSampleData(points, min, max) {
+            const data = [];
+            for (let i = 0; i < points; i++) {
+                let value;
+                if (i >= 6 && i <= 9 || i >= 17 && i <= 19) {
+                    // Peak hours
+                    value = Math.random() * (max - min * 2) + min * 2;
+                } else if (i >= 22 || i <= 5) {
+                    // Night hours
+                    value = Math.random() * min * 0.5;
+                } else {
+                    // Regular hours
+                    value = Math.random() * (max * 0.7 - min) + min;
+                }
+                data.push(Math.round(value));
+            }
+            return data;
+        }
+
+        function generateScheduleData(points) {
+            const data = [];
+            for (let i = 0; i < points; i++) {
+                let buses;
+                if (i >= 6 && i <= 9 || i >= 17 && i <= 19) {
+                    buses = Math.floor(Math.random() * 8) + 5; // Peak: 5-12 buses
+                } else if (i >= 22 || i <= 5) {
+                    buses = Math.floor(Math.random() * 2) + 1; // Night: 1-2 buses
+                } else {
+                    buses = Math.floor(Math.random() * 4) + 2; // Regular: 2-5 buses
+                }
+                data.push(buses);
+            }
+            return data;
+        }
+
+        function updateDemandChart() {
+            if (demandChart) {
+                // Update chart data based on selected route
+                const route = document.getElementById('analytics-route').value;
+                demandChart.data.datasets[0].data = generateSampleData(24, 50, 500);
+                demandChart.data.datasets[1].data = generateSampleData(24, 45, 480);
+                demandChart.data.datasets[2].data = generateSampleData(24, 55, 520);
+                demandChart.update();
+            }
+        }
+
+        function updateScheduleChart() {
+            if (scheduleChart) {
+                scheduleChart.data.datasets[0].data = generateScheduleData(24);
+                scheduleChart.update();
+                
+                // Update total buses required
+                const total = scheduleChart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                document.getElementById('totalBusesRequired').textContent = total;
+                
+                // Update estimated cost
+                const cost = total * 1500; // Simplified calculation
+                document.getElementById('estimatedCost').textContent = `₹${cost.toLocaleString()}`;
+            }
+        }
+
+        function setupRealTimeUpdates() {
+            // Update every 30 seconds
+            updateInterval = setInterval(async () => {
+                await loadLiveUpdates();
+                
+                // Update time-based elements
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
+                
+                // Simulate some live data changes
+                if (Math.random() < 0.3) {
+                    // Randomly update some metrics
+                    const currentBuses = parseInt(document.getElementById('activeBuses').textContent);
+                    document.getElementById('activeBuses').textContent = currentBuses + (Math.random() > 0.5 ? 1 : -1);
+                }
+                
+            }, 30000);
+        }
+
+        // Event handlers
+        async function approveSchedule() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading"></div> Approving...';
+            
+            // Simulate approval process
+            setTimeout(() => {
+                btn.innerHTML = '✅ Schedule Approved';
+                btn.style.background = 'var(--success-color)';
+                
+                // Show success message
+                alert('Schedule approved successfully! Changes will be deployed at 4:45 AM tomorrow.');
+            }, 2000);
+        }
+
+        function modifySchedule() {
+            alert('Schedule modification interface would be implemented here.');
+        }
+
+        function showNotifications() {
+            alert('Notifications:\n\n• Weather Alert: Heavy rainfall expected tomorrow\n• System Update: ML model updated\n• Route Alert: High demand on Salem route');
+        }
+
+        function showUserMenu() {
+            const menu = confirm('User Menu:\n\n• View Profile\n• Logout\n\nClick OK to logout, Cancel to stay');
+            if (menu) {
+                logout();
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch('http://localhost:5000/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_info');
+            localStorage.removeItem('user_permissions');
+            window.location.href = 'login.html';
+        }
+
+        // Handle route selection change
+        document.addEventListener('change', function(e) {
+            if (e.target.id === 'analytics-route') {
+                updateDemandChart();
+                
+                // Update prediction accuracy for selected route
+                const accuracy = 85 + Math.random() * 10;
+                document.getElementById('predictionAccuracy').textContent = `${accuracy.toFixed(1)}%`;
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (updateInterval) clearInterval(updateInterval);
+        });
+
+        console.log('🚌 TN Transport Optimizer 2025 Dashboard Ready!');
+        console.log('🔐 Authentication: ✓');
+        console.log('📊 Real-time Updates: ✓');
+        console.log('🎉 Events Integration: ✓');
+        console.log('🌤️ Weather Integration: ✓');
+    </script>
+</body>
+</html>

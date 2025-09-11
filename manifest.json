@@ -1,0 +1,71 @@
+{
+  "name": "Tamil Nadu Transport Optimizer 2025",
+  "short_name": "TN Transport",
+  "description": "AI-powered public transport optimization for Tamil Nadu",
+  "start_url": "/login.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "government", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iNDAiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl82NjdlZWEpIi8+CjxwYXRoIGQ9Ik05NiA0OEMxMTguMDkxIDQ4IDEzNiA2NS45MDg2IDEzNiA4OFY5NkgxNTJWMTEySDEzNlYxMjhIMTUyVjE0NEgxMzZWMTUyQzEzNiAxNzQuMDkxIDExOC4wOTEgMTkyIDk2IDE5Mkg0OFYxNzZINjRWMTYwSDQ4VjE0NEg2NFYxMjhINDhWMTEySDY0Vjk2SDQ4Vjg4QzQ4IDY1LjkwODYgNjUuOTA4NiA0OCA4OCA0OEg5NloiIGZpbGw9IndoaXRlIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MF9saW5lYXJfNjY3ZWVhIiB4MT0iMCIgeTE9IjAiIHgyPSIxOTIiIHkyPSIxOTIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzY2N0VFQSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3NjRCQTIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTA0IiBmaWxsPSJ1cmwoI2dyYWRpZW50MF9saW5lYXJfNjY3ZWVhKSIvPgo8cGF0aCBkPSJNMjU2IDEyOEMzMTYuMjQ0IDEyOCAzNjQgMTc1Ljc1NiAzNjQgMjM2VjI1Nkg0MDRWMjkySDM2NFYzMjhINDA0VjM2NEgzNjRWMzg0QzM2NCA0NDQuMjQ0IDMxNi4yNDQgNDkyIDI1NiA0OTJIMTIwVjQ0NEgxNjBWMzk2SDEyMFYzNjRIMTYwVjMyOEgxMjBWMjkyTDE2MCAyOTJWMjU2SDEyMFYyMzZDMTIwIDE3NS43NTYgMTY3Ljc1NiAxMjggMjI4IDEyOEgyNTZaIiBmaWxsPSJ3aGl0ZSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudDBfbGluZWFyXzY2N2VlYSIgeDE9IjAiIHkxPSIwIiB4Mj0iNTEyIiB5Mj0iNTEyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM2NjdFRUEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNzY0QkEyIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ],
+  "permissions": [
+    "geolocation",
+    "notifications"
+  ],
+  "features": [
+    "cross-origin-isolated"
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIHZpZXdCb3g9IjAgMCAxMjgwIDcyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyODAiIGhlaWdodD0iNzIwIiBmaWxsPSIjRjlGQUZCIi8+CjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjQwIiByeD0iMjAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNFNUU3RUIiLz4KPHN2ZyB4PSI2NCIgeT0iNjQiIHdpZHRoPSIxMTUyIiBoZWlnaHQ9IjU5MiI+CjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMTUyIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzY2N0VFQSIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPHN2ZyB4PSIyMCIgeT0iMTMwIiBjbGFzcz0ibWV0cmljLWNhcmRzIiB3aWR0aD0iMTEzMiI+CjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyNzAiIGhlaWdodD0iMTIwIiByeD0iMTYiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNFNUU3RUIiLz4KPHJlY3QgeD0iMjkwIiB5PSIwIiB3aWR0aD0iMjcwIiBoZWlnaHQ9IjEyMCIgcng9IjE2IiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjRTVFN0VCIi8+CjxyZWN0IHg9IjU4MCIgeT0iMCIgd2lkdGg9IjI3MCIgaGVpZ2h0PSIxMjAiIHJ4PSIxNiIgZmlsbD0id2hpdGUiIHN0cm9rZT0iI0U1RTdFQiIvPgo8cmVjdCB4PSI4NzAiIHk9IjAiIHdpZHRoPSIyNzAiIGhlaWdodD0iMTIwIiByeD0iMTYiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNFNUU3RUIiLz4KPC9zdmc+CjxyZWN0IHg9IjIwIiB5PSIyNzAiIHdpZHRoPSI1NTAiIGhlaWdodD0iMzAwIiByeD0iMTYiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNFNUU3RUIiLz4KPHJlY3QgeD0iNTkwIiB5PSIyNzAiIHdpZHRoPSI1NTAiIGhlaWdodD0iMzAwIiByeD0iMTYiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNFNUU3RUIiLz4KPC9zdmc+CjxyZWN0IHg9IjUwIiB5PSI1MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1MCIgcng9IjgiIGZpbGw9IiM2NjdFRUEiLz4KPHRleHQgeD0iMTAwIiB5PSI4MCIgZm9udC1mYW1pbHk9IkludGVyLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RGFzaGJvYXJkPC90ZXh0Pgo8L3N2Zz4=",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Dashboard view showing real-time transport metrics"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View real-time transport dashboard",
+      "url": "/dashboard.html",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9IiM2NjdFRUEiLz4KPHN2ZyB4PSIyNCIgeT0iMjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNNiAySDQyQzQzLjEwNDYgMiA0NCAyLjg5NTQzIDQ0IDRWNDRDNDQgNDUuMTA0NiA0My4xMDQ2IDQ2IDQyIDQ2SDZDNC44OTU0MyA0NiA0IDQ1LjEwNDYgNCA0NFY0QzQgMi44OTU0MyA0Ljg5NTQzIDIgNiAyWiIvPgo8L3N2Zz4KPC9zdmc+",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View predictive analytics",
+      "url": "/dashboard.html#analytics",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9IiMxMEI5ODEiLz4KPHN2ZyB4PSIyNCIgeT0iMjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNNCA0SDEyTDIwIDEyTDI4IDhMNDAgMjBMNDQgMTZWNDBINFY0WiIvPgo8L3N2Zz4KPC9zdmc+",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Transport Optimizer 2025 | Tamil Nadu Government</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1FB8CD">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <h2>Loading Enhanced Transport Optimizer...</h2>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page-container hidden">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="govt-emblem">🏛️</div>
+                    <h1>Transport Optimizer 2025</h1>
+                    <p>Tamil Nadu Government</p>
+                </div>
+                
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn--primary btn--full-width">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="demo-credentials">
+                    <h3>Demo Credentials</h3>
+                    <div class="demo-users">
+                        <button class="demo-user-btn" data-username="admin" data-password="admin123">
+                            <strong>Administrator</strong>
+                            <span>admin / admin123</span>
+                        </button>
+                        <button class="demo-user-btn" data-username="manager" data-password="manager123">
+                            <strong>Operations Manager</strong>
+                            <span>manager / manager123</span>
+                        </button>
+                        <button class="demo-user-btn" data-username="operator" data-password="operator123">
+                            <strong>Field Operator</strong>
+                            <span>operator / operator123</span>
+                        </button>
+                        <button class="demo-user-btn" data-username="viewer" data-password="viewer123">
+                            <strong>Analytics Viewer</strong>
+                            <span>viewer / viewer123</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="main-app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>🚌 Transport Optimizer 2025</h1>
+                    <span class="user-badge" id="user-badge">Welcome, User</span>
+                </div>
+                <div class="header-right">
+                    <div class="system-status">
+                        <div class="status-indicator online"></div>
+                        <span>System Online</span>
+                    </div>
+                    <button class="btn btn--outline btn--sm" id="logout-btn">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <div class="nav-content">
+                <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+                <button class="nav-btn" data-section="analytics">📈 Analytics</button>
+                <button class="nav-btn" data-section="scheduler">⏰ Scheduler</button>
+                <button class="nav-btn" data-section="events">📅 Events</button>
+                <button class="nav-btn" data-section="news">📰 News</button>
+            </div>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="app-section active">
+            <div class="container">
+                <!-- Real-time Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card performance">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-content">
+                            <h3>Performance Today</h3>
+                            <div class="metric-value" id="performance-value">87.3%</div>
+                            <div class="metric-change positive">+2.1%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card buses">
+                        <div class="metric-icon">🚌</div>
+                        <div class="metric-content">
+                            <h3>Active Buses</h3>
+                            <div class="metric-value" id="active-buses">45</div>
+                            <div class="metric-change positive">+3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card passengers">
+                        <div class="metric-icon">👥</div>
+                        <div class="metric-content">
+                            <h3>Passengers Today</h3>
+                            <div class="metric-value" id="passengers-today">8,247</div>
+                            <div class="metric-change positive">+412</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card savings">
+                        <div class="metric-icon">💰</div>
+                        <div class="metric-content">
+                            <h3>Weekly Savings</h3>
+                            <div class="metric-value" id="weekly-savings">₹52,500</div>
+                            <div class="metric-change positive">+₹3,200</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather & Routes -->
+                <div class="dashboard-grid">
+                    <div class="card weather-card">
+                        <div class="card__body">
+                            <h3>Weather Impact</h3>
+                            <div class="weather-info">
+                                <div class="weather-icon">⛅</div>
+                                <div class="weather-details">
+                                    <div class="temperature">29°C</div>
+                                    <div class="condition">Partly Cloudy</div>
+                                    <div class="impact">Impact Factor: 1.05x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card routes-card">
+                        <div class="card__body">
+                            <h3>Route Status</h3>
+                            <div class="routes-list">
+                                <div class="route-item">
+                                    <div class="route-name">Tiruppur - Pollachi</div>
+                                    <div class="route-status">
+                                        <span class="status status--success">Optimal</span>
+                                        <span class="route-buses">12 buses</span>
+                                    </div>
+                                </div>
+                                <div class="route-item">
+                                    <div class="route-name">Tiruppur - Coimbatore</div>
+                                    <div class="route-status">
+                                        <span class="status status--success">Optimal</span>
+                                        <span class="route-buses">18 buses</span>
+                                    </div>
+                                </div>
+                                <div class="route-item">
+                                    <div class="route-name">Tiruppur - Salem</div>
+                                    <div class="route-status">
+                                        <span class="status status--warning">Moderate</span>
+                                        <span class="route-buses">15 buses</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Chart -->
+                <div class="card chart-card">
+                    <div class="card__body">
+                        <h3>Today's Passenger Flow</h3>
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="passenger-flow-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics-section" class="app-section">
+            <div class="container">
+                <h2>Analytics Dashboard</h2>
+                
+                <div class="analytics-controls">
+                    <div class="form-group">
+                        <label class="form-label">Select Route</label>
+                        <select id="route-selector" class="form-control">
+                            <option value="tp_pc">Tiruppur to Pollachi</option>
+                            <option value="tp_cb">Tiruppur to Coimbatore</option>
+                            <option value="tp_sl">Tiruppur to Salem</option>
+                        </select>
+                    </div>
+                    <div class="accuracy-indicator">
+                        <div class="accuracy-label">Prediction Accuracy</div>
+                        <div class="accuracy-value">89.2%</div>
+                        <div class="confidence-score">Confidence: High</div>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Demand vs Prediction</h3>
+                            <div class="chart-container" style="position: relative; height: 350px;">
+                                <canvas id="demand-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Route Performance</h3>
+                            <div class="chart-container" style="position: relative; height: 350px;">
+                                <canvas id="performance-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scheduler Section -->
+        <section id="scheduler-section" class="app-section">
+            <div class="container">
+                <h2>Smart Scheduler</h2>
+                
+                <div class="scheduler-header">
+                    <div class="schedule-date">
+                        <h3>Tomorrow's Optimized Schedule</h3>
+                        <p>September 12, 2025 - Ganesh Chaturthi (High Demand Expected)</p>
+                    </div>
+                    <button class="btn btn--primary" id="approve-schedule">Approve Schedule</button>
+                </div>
+
+                <div class="scheduler-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Bus Allocation</h3>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="allocation-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card cost-analysis">
+                        <div class="card__body">
+                            <h3>Cost Analysis</h3>
+                            <div class="cost-metrics">
+                                <div class="cost-item">
+                                    <span>Fuel Cost</span>
+                                    <span>₹45,200</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span>Operational Cost</span>
+                                    <span>₹28,500</span>
+                                </div>
+                                <div class="cost-item savings-item">
+                                    <span>Estimated Savings</span>
+                                    <span>₹8,400</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events-section" class="app-section">
+            <div class="container">
+                <h2>Events Calendar 2025-2026</h2>
+                
+                <div class="events-grid">
+                    <div id="events-list" class="events-list">
+                        <!-- Events will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news-section" class="app-section">
+            <div class="container">
+                <h2>Transport News & Updates</h2>
+                
+                <div class="news-grid">
+                    <div id="news-feed" class="news-feed">
+                        <!-- News will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <span class="notification-message"></span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
